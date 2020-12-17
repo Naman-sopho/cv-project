@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Grid, Fab, Slide, Typography } from '@material-ui/core';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import LaunchScreenPatient from './components/LaunchScreenPatient';
-import LaunchScreenPhysician from './components/LaunchScreenPhysician';
 import axios from 'axios';
+import {DropzoneArea} from 'material-ui-dropzone'
 
 const font = "'Montserrat', sans-serif";
 
@@ -20,30 +19,47 @@ class App extends Component {
 
     componentWillMount() {
         this.setState({
-            startPatient: false,
-            startPhysician: false
-        });
-        axios.get('Splash');
+            imageUploaded: 0
+        })
     };
 
-    handlePatient() {
+    handleUploadClick = event => {
+        console.log(event.target.files.length);
+        var file = event.target.files[0];
+        const reader = new FileReader();
+        var url = reader.readAsDataURL(file);
+    
+        reader.onloadend = function(e) {
+          this.setState({
+            selectedFile: [reader.result]
+          });
+        }.bind(this);
+    
         this.setState({
-            startPatient: true
+          selectedFile: event.target.files[0],
+          imageUploaded: 1
         });
     };
-
-    handlePhysician() {
-        this.setState({
-            startPhysician: true
-        });
-    }
 
     render() {
         return (
             <ThemeProvider theme={muiTheme}>
             <div className="App">
-                <Grid container>
-                    
+                <Grid className="App-header" container>
+                <input
+                    accept="image/*"
+                    // className={classes.input}
+                    id="contained-button-file"
+                    multiple
+                    hidden
+                    type="file"
+                    onChange={this.handleUploadClick}
+                />
+                <label htmlFor="contained-button-file">
+                    <Fab component="span">
+                        <AddPhotoAlternateIcon />
+                    </Fab>
+                </label>
                 </Grid>
             </div>
             </ThemeProvider>
