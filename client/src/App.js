@@ -77,6 +77,9 @@ class App extends Component {
             <div className="App">
                 <Grid className="App-header" container>
                     <Grid item md={12}>
+                        <Typography variant="h6"> Please upload 4 images to generate 3D model.</Typography>
+                    </Grid>
+                    <Grid item md={12}>
                         <input
                             accept="image/*"
                             // className={classes.input}
