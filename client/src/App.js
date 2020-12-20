@@ -20,7 +20,8 @@ class App extends Component {
 
     componentWillMount() {
         this.setState({
-            imageUploaded: 0
+            imageUploaded: 0,
+            loading: false
         })
     };
 
@@ -42,6 +43,10 @@ class App extends Component {
             form.append(index, file);
         });
 
+        this.setState({
+            loading: true
+        })
+
         axios.post('/generateBinvox', form, {
             headers: {
               'accept': 'application/json',
@@ -56,6 +61,9 @@ class App extends Component {
             var blob = new Blob([response.data], {type: 'application/octet-stream'});
             
             init_vox(blob);
+            this.setState({
+                loading: false
+            })
         });
           })
           .catch((error) => {
@@ -83,6 +91,9 @@ class App extends Component {
                                 <AddPhotoAlternateIcon />
                             </Fab>
                         </label>
+                    </Grid>
+                    <Grid item md={12}>
+                        {this.state.loading && <Typography>Generating model...will take a while!!!! :)</Typography>}
                     </Grid>
                     <Grid item md={8}>
                         <div id="3d-container" style={{"height": 500, "width": 500}}>
